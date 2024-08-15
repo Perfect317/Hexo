@@ -1,6 +1,8 @@
 ---
 title: Git的基本使用方法
 date: 2024-07-30 17:45:56
+tags: Git
+categories: 基础技能学习
 ---
 
 # 1.git config 配置
@@ -254,4 +256,92 @@ github上提供了一些现成的.gitignore文件，可以直接使用，也可�
 https://github.com/github/gitignore
 ```
 
-9.
+# 9.SSH配置
+
+需要在本地生成ssh秘钥，将ssh公钥保存在github中
+
+秘钥在根目录下的.ssh，如果没有需要创建该文件夹
+
+使用ssh-keygen -t rsa -b 4096生成秘钥，如果是第一次使用一路回车即可，id_rsa就是私钥，id_rsa.pub就是公钥文件，在github中配置公钥
+
+# 10.本地仓库和远程仓库连接
+
+## 1.不存在本地仓库
+
+```
+echo "# Hexo-comment" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/Perfect317/Hexo-comment.git
+git push -u origin main
+```
+
+## 2.存在本地仓库，直接和远程仓库连接
+
+```
+git remote add origin https://github.com/Perfect317/Hexo-comment.git
+git branch -M main
+git push -u origin main
+```
+
+# 11.分支学习
+
+可以独立存在且有不同的版本，分支的使用场景可在多人协作开发时创建自己的分支，最后再进行合并
+
+查看当前的所有分支
+
+```powershell
+git branch
+```
+
+新建分支
+
+```
+git branch NewBranch
+```
+
+切换分支
+
+```
+git checkout NewBranch
+git switch NewBranch //推荐
+```
+
+在并行开发工作中分支也是并行的，将所有测试好的内容最终合并到main分支中；
+
+git merge后的第一个参数是要合并的分支，合并到当前所在分支；
+
+```
+git merge NewBranch
+```
+
+合并之后分支还是存在的，需要手动删除已经合并的分支
+
+```
+git branch -d NewBranch //未合并的分支不能使用-d参数，强制删除需要使用-D参数
+```
+
+查看分支图
+
+```powershell
+git log --graph --oneline --decorate --all
+```
+
+强制删除分支
+
+```
+git branch -D NewBranch
+```
+
+# 12.解决合并冲突
+
+上一节使用的命令只能合并两个分支没有冲突文件时，如果两个分支都修改了同一个文件，那么就需要手动合并，合并时会报错，需要解决冲突后再提交，此时可以使用
+
+```
+git status //查看冲突文件
+git diff //查看冲突的具体内容
+```
+
+手动合并时将冲突文件中两个分支的内容进行合并即可
