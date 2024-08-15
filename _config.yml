@@ -107,4 +107,4 @@ deploy:
   type: 'git'  # 部署类型为 Git
   message: update  # 提交信息
   repo: root@123.60.57.4:/root/hexo.git  # 仓库地址
-  branch: main  # 分支名称
+  branch: master  # 分支名称
