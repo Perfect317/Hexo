@@ -1,3 +1,10 @@
+---
+title: XXE漏洞
+date: 2024-10-12 10:35:50
+tags: CTF
+categories: CTF-WEb
+---
+
 # XXE基础
 
 ```

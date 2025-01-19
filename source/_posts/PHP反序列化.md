@@ -1,3 +1,12 @@
+---
+title: PHP反序列化
+date: 2024-10-19 15:35:50
+tags: CTF
+categories: CTF-WEb
+---
+
+
+
 # 1.序列化
 
 ## 数组序列化

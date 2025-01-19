@@ -1,3 +1,10 @@
+---
+title: SQL注入
+date: 2024-9-20 15:35:50
+tags: CTF
+categories: CTF-WEb
+---
+
 # 1.SQLmap 工具的使用
 
 ## 1.基本使用：
