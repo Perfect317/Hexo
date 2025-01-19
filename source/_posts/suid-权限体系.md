@@ -149,6 +149,16 @@ x ：执行 1
 
 Suid：4000
 
+> 4表示`S`权限 后三位分别表示所有者（user）权限（rwx）；所属组（group）权限（rwx）；其他用户（others）权限（rwx）。
+>
+> 可以用作find命令时
+>
+> ```shell
+> find / -perm 4000 -type f -ls 2>/dev/null
+> ```
+>
+> 
+
 Sgid ：2000
 
 Sbit ：1000
