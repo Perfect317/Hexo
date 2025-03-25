@@ -2,7 +2,7 @@
 title: linux基础
 date: 2025-03-18 14:12:32
 tags: linux精讲
-categories: linux
+categories: Linux
 ---
 
 

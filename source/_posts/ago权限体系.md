@@ -2,7 +2,7 @@
 title: linux提权前置知识
 date: 2024-08-22 20:10:52
 tags: linux精讲
-categories: linux
+categories: Linux
 ---
 
 # linux ugo权限

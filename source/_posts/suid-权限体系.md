@@ -2,7 +2,7 @@
 title: suid 权限体系
 date: 2024-08-31 19:10:47
 tags: linux精讲
-categories: linux
+categories: Linux
 ---
 
 # 1.linux特殊权限介绍

