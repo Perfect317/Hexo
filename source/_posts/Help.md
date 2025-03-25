@@ -1,6 +1,6 @@
 ---
 title: HackTheBox-Help
-data: 2025-3-17 20:00:00
+date: 2025-3-17 20:00:00
 tags: 红队
 categories: 红队打靶-Linux
 ---
