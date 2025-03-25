@@ -227,7 +227,7 @@ ln abc cde       #建立abc的硬连接
 
 ### usermod
 
-只有 root 或具有[sudo](./././././././././https://linuxize.com/post/sudo-command-in-linux/) 访问权限的用户才能调用`usermod`和修改用户帐户。成功后，该命令不会显示任何输出。
+只有 root 或具有[sudo](././././././././././https://linuxize.com/post/sudo-command-in-linux/) 访问权限的用户才能调用`usermod`和修改用户帐户。成功后，该命令不会显示任何输出。
 
 最典型的用例`usermod`是将用户添加到组中。
 
