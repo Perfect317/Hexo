@@ -1,7 +1,7 @@
 import os
 
 
-def update_markdown_links(directory="./source/_posts"):
+def update_markdown_links(directory="../source/_posts"):
     for filename in os.listdir(directory):
         if filename.endswith(".md"):
             filepath = os.path.join(directory, filename)
