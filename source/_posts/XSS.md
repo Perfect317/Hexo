@@ -2,7 +2,7 @@
 title: XSS
 date: 2024-10-19 15:35:50
 tags: CTF
-categories: CTF-WEb
+categories: CTF-Web
 ---
 
 

