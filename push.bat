@@ -12,7 +12,7 @@ if not exist "%bat_dir%" (
     exit /b
 )
 
-set "scripts=replace.bat hexo_update.bat push.bat"
+set "scripts=hexo_clean.bat hexo_update.bat push.bat"
 
 for %%S in (%scripts%) do (
     set "script_path=%bat_dir%\%%S"

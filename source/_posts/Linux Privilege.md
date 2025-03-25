@@ -216,7 +216,7 @@ find / -type f -perm -04000 -ls 2>/dev/null
 
 典型的使用SUID的命令
 
-![rSRTn5v](./././././././././././Linux%20Privilege/rSRTn5v.png)
+![rSRTn5v](./Linux%20Privilege/rSRTn5v.png)
 
 https://gtfobins.github.io/ 
 
