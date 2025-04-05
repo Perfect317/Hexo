@@ -50,7 +50,7 @@ snmpwalk -v 2c -c public monitored.htb
 
 知道SVC用户的密码
 
-![image-20250321222237475](././././././././././Monitored/image-20250321222237475.png)
+![image-20250321222237475](./Monitored/image-20250321222237475.png)
 
 ```
 svc:XjH7VCehowpR1xZB
@@ -60,7 +60,7 @@ svc:XjH7VCehowpR1xZB
 
 https://nagios.monitored.htb/nagiosxi/ 也是个登录页面，使用上面的账号密码登录失败，显示账号被封禁
 
-![image-20250322165030753](././././././././././Monitored/image-20250322165030753.png)
+![image-20250322165030753](./Monitored/image-20250322165030753.png)
 
 
 
