@@ -9,7 +9,7 @@ categories: 红队打靶-Linux
 
 ![image-20250327102833282](./CozyHosting/image-20250327102833282.png)
 
-## 80端口
+## 80s端口
 
 ### dirsearch
 
