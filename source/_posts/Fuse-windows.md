@@ -1,5 +1,5 @@
 ---
-title: HackTheBox-Fuse-Findows
+title: HackTheBox-Fuse-Windows
 date: 2025-3-24 20:34:00
 tags: 红队
 categories: 红队打靶-Windows
