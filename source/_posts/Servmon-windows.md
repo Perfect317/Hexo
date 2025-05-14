@@ -1,5 +1,5 @@
 ---
-title: HackTheBox-Servmon-Findows
+title: HackTheBox-Servmon-Windows
 date: 2025-4-10 20:00:00
 tags: 红队
 categories: 红队打靶-Windows
