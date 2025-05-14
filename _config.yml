@@ -106,5 +106,5 @@ theme: fluid  # 使用的主题名称
 deploy:
   type: 'git'  # 部署类型为 Git
   message: update  # 提交信息
-  repo: root@123.60.57.4:/root/hexo.git  # 仓库地址
+  repo: root@117.72.193.61:/root/hexo.git  # 仓库地址
   branch: master  # 分支名称
