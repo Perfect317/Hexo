@@ -1,5 +1,5 @@
 ---
-title: Hackthebox-Blackfield-Windows_Active-Windows_Active
+title: Hackthebox-Blackfield-Windows_Active
 date: 2025-05-13 20:00:00
 tags: 红队
 categories: 红队打靶-Windows_Active
