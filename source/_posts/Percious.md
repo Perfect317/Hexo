@@ -1,6 +1,6 @@
 ---
-title: HackTheBox-Underpass
-date: 2024-5-21 20:00:00
+title: HackTheBox-Precious
+date: 2025-5-21 20:00:00
 tags: 红队
 categories: 红队打靶-Linux
 ---
