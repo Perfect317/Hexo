@@ -1,3 +1,12 @@
+---
+title: Proving Grounds Practice-Clue
+date: 2025-6-08 20:00:00
+tags: 红队
+categories: 红队打靶-Linux
+---
+
+
+
 # 信息收集
 
 ## nmap
