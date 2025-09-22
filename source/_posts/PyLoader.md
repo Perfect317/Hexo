@@ -1,9 +1,9 @@
-```
-title: Proving Grounds Practice-Pyloader
+---
+title: Proving Grounds Practice-PyLoader
 date: 2025-9-16 20:00:00
 tags: 红队
 categories: 红队打靶-Linux
-```
+---
 
 
 
