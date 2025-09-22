@@ -13,7 +13,7 @@ timezone: ''  # 时区设置，当前为空
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
-url: https://liam317.top  # 站点 URL
+url: http://www.liam317.top  # 站点 URL
 permalink: :year/:month/:day/:title/  # 文章链接格式
 permalink_defaults:  # 默认的永久链接设置
 pretty_urls:
