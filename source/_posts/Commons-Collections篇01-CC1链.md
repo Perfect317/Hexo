@@ -7,11 +7,11 @@ categories: JAVA安全-JAVA反序列化
 
 ## 环境搭建
 
-[jdk8u65下载链接](./https://www.oracle.com/java/technologies/javase/javase8-archive-downloads.html)
+[jdk8u65下载链接](https://www.oracle.com/java/technologies/javase/javase8-archive-downloads.html)
 
 ![image-20250924172617142](./Commons-Collections篇01-CC1链/image-20250924172617142.png)
 
-[openjdk下载链接](./https://hg.openjdk.org/jdk8u/jdk8u/jdk/rev/af660750b2f4)
+[openjdk下载链接](https://hg.openjdk.org/jdk8u/jdk8u/jdk/rev/af660750b2f4)
 
 ![image-20250924172630367](./Commons-Collections篇01-CC1链/image-20250924172630367.png)
 
