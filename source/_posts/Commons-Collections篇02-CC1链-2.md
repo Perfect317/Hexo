@@ -1,5 +1,5 @@
 ---
-title: Java反序列化-02-CC1链-2
+title: Commons-Collections篇02-CC1链-2
 date: 2025-9-25 20:00:00
 tags: JAVA
 categories: JAVA安全-JAVA反序列化
