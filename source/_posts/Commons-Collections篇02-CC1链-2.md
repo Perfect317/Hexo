@@ -5,6 +5,12 @@ tags: JAVA
 categories: JAVA安全-JAVA反序列化
 ---
 
+
+
+# 调用链
+
+![image-20250925175604377](Commons-Collections%E7%AF%8702-CC1%E9%93%BE-2/image-20250925175604377.png)
+
 # 初步构造-寻找transform
 
 还是从`transform`出发，这次找的是`LazyMap`类，`LazyMap`类的get方法中有调用`transform`
@@ -101,9 +107,11 @@ Class c = Class.forName("sun.reflect.annotation.AnnotationInvocationHandler");
 
 反序列化时调用`readObject`，然后执行其中的`MemberValues.entryset`，`MemberValues`又是我们动态定义的代理类，就会执行`invoke`方法去执行其中的`get`方法，执行get方法时我们又将`MemberValues`赋值为`LazyMap`通过`decorate`方法进行实例化过的`decorateMap`，最终执行的就是`LazyMap`的`get`方法，`LazyMap`的`get`方法下又执行了`factory.transform`，`factory`我们已经通过`decorate`方法来调用构造函数赋值为`InvokerTransformer`,最终就会执行`InvokerTransformer.transform`,该方法又可以任意命令执行
 
-# 调用链
 
+<<<<<<< HEAD
+=======
 ![image-20250925175604377](./Commons-Collections%E7%AF%8702-CC1%E9%93%BE-2/image-20250925175604377.png)
+>>>>>>> 4283b47aa81cb2f20c10f726cb9fa12fbfafc886
 
 # 完整代码
 

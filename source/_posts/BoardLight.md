@@ -1,6 +1,6 @@
 ---
 title: HackTheBox-BoardLight
-data: 2025-3-25 19:24:00
+data: 2025-3-25 20:00:00
 tags: 红队
 categories: 红队打靶-Linux
 ---

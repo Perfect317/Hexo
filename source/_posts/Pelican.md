@@ -1,6 +1,6 @@
 ---
 title: Proving Grounds Practice-Pelican
-date: 2025-5-26 20:00:0s0
+date: 2025-5-26 20:00:00
 tags: 红队
 categories: 红队打靶-Linux
 ---

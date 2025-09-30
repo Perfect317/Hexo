@@ -40,6 +40,8 @@ categories: JAVA安全-JAVA反序列化
 
 ## 代码实现
 
+利用有参构造实例化`InstantiateTransformer`，参数分别是`TrAXFilter`构造函数的`参数类型`和`参数值`
+
 ```java
 package org.example;
 

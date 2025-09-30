@@ -25,7 +25,7 @@ categories: JAVA安全-JAVA反序列化
 
 ## 调用链
 
-![image-20250928162712816](./Commons-Collections篇05-CC4链/image-20250928162712816.png)
+![image-20250929135851889](Commons-Collections%E7%AF%8705-CC4%E9%93%BE/image-20250929135851889.png)
 
 ### Templateslmpl加载字节码
 
@@ -72,7 +72,7 @@ public class CC4 {
 
 然后往前找，`TransformingComparator.compare()`调用`transformer()`
 
-![image-20250928145422184](Commons-Collections篇05-CC4链/image-20250928145422184.png)
+![image-20250928145422184](Commons-Collections%E7%AF%8705-CC4%E9%93%BE/image-20250928145422184.png)
 
 ```java
         byte[] code = Files.readAllBytes(Paths.get("E:\\迅雷下载\\org\\example\\Calc.class"));
@@ -93,25 +93,25 @@ public class CC4 {
 
 ### PriorityQueue内部调用链
 
-![image-20250928161305133](./Commons-Collections篇05-CC4%E9%93%BE/image-20250928161305133.png)
+![image-20250928161305133](Commons-Collections%E7%AF%8705-CC4%E9%93%BE/image-20250928161305133.png)
 
 
 
 `PriorityQueue`中的`siftDownUsingComparator`调用了`compare`
 
-![image-20250928150212771](./Commons-Collections%E7%AF%8705-CC4%E9%93%BE/image-20250928150212771.png)
+![image-20250928150212771](Commons-Collections%E7%AF%8705-CC4%E9%93%BE/image-20250928150212771.png)
 
 同名类下的`SiftDown`调用了`siftDownUsingComparator`
 
-![image-20250928160210491](./Commons-Collections%E7%AF%8705-CC4%E9%93%BE/image-20250928160210491.png)
+![image-20250928160210491](Commons-Collections%E7%AF%8705-CC4%E9%93%BE/image-20250928160210491.png)
 
 同名类下的`heapify`调用了`siftDown`,
 
-![image-20250928160156545](./Commons-Collections%E7%AF%8705-CC4%E9%93%BE/image-20250928160156545.png)
+![image-20250928160156545](Commons-Collections%E7%AF%8705-CC4%E9%93%BE/image-20250928160156545.png)
 
 这里要注意size的值，满足条件才会进入for循环，`size>>>1`就是正数除以二的意思
 
-![image-20250928160302684](./Commons-Collections%E7%AF%8705-CC4%E9%93%BE/image-20250928160302684.png)
+![image-20250928160302684](Commons-Collections%E7%AF%8705-CC4%E9%93%BE/image-20250928160302684.png)
 
 size是其中的元素数量，所以添加几个数值即可
 
@@ -122,7 +122,7 @@ size是其中的元素数量，所以添加几个数值即可
 
 同名类下的`readObject`调用了`heapify`
 
-![image-20250928160147137](./Commons-Collections%E7%AF%8705-CC4%E9%93%BE/image-20250928160147137.png)
+![image-20250928160147137](Commons-Collections%E7%AF%8705-CC4%E9%93%BE/image-20250928160147137.png)
 
 后续的链子所有步骤都在`PriorityQueue`中执行，只要满足每个函数的条件，直接反序列化就可以调用整条链
 
@@ -161,7 +161,7 @@ size是其中的元素数量，所以添加几个数值即可
 
 刚进入这个类找`compare`函数时就可以找到多个地方调用了`compare`，所以出现问题很容易想到是`add`调用了`compare`函数
 
-![image-20250928161513481](./Commons-Collections%E7%AF%8705-CC4%E9%93%BE/image-20250928161513481.png)
+![image-20250928161513481](Commons-Collections%E7%AF%8705-CC4%E9%93%BE/image-20250928161513481.png)
 
 修改方法也很简单，在调用add之前，无法完整的调用整个链子，在add之后再将链子补充完整即可
 
