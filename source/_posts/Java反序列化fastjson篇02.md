@@ -1,6 +1,6 @@
 ---
 title: Java反序列化fastjson篇02-Fastjson 1.2.24 
-date: 2025-10-4 20:00:00
+date: 2025-10-5 20:00:00
 tags: JAVA
 categories: JAVA安全-JAVA反序列化
 ---
@@ -37,7 +37,7 @@ categories: JAVA安全-JAVA反序列化
 
 #  基于 TemplatesImpl 的利用链
 
-![image-20251004185139220](./Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96fastjson%E7%AF%8702-Fastjson%201.2.24%20/image-20251004185139220.png)
+![image-20251004185139220](./Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96fastjson%E7%AF%8702-Fastjson-1.2.24%20/image-20251004185139220-17597386847102.png)
 
 `TemplatesImpl`链在之前说过，是通过`getTransletInstance`调用`newInstance`实现的动态加载字节码，`getTransletInstance`也是个`getter`方法，但是这个`getter`方法不满足`fastjson`反序列化时调用的`getter`方法，条件如下：
 
@@ -57,7 +57,7 @@ categories: JAVA安全-JAVA反序列化
 
 再去找另一个调用了`newInstance`方法的函数，找到`getOutputProperties`，这个是满足条件的，因为`Properties`实现了`Map`接口
 
-![image-20251004185440506](./Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96fastjson%E7%AF%8702-Fastjson%201.2.24%20/image-20251004185440506.png)
+![image-20251004185440506](./Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96fastjson%E7%AF%8702-Fastjson-1.2.24%20/image-20251004185440506.png)
 
 并且还需要满足`TemplatesImpl`链中的那些条件,`_name!=null`,`_bytecodes!=null`,`_tfactory为TransformFactoryImpl对象`
 
